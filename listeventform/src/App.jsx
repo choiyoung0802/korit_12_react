@@ -1,12 +1,12 @@
-import './App.css'
-import MyList from './Mylist';
+import MyForm2 from "./MyForm2";
+import MyForm3 from "./MyForm3";
 
 function App() {
   
-
   return (
     <>
-      <MyList/>
+      <MyForm3/><br /><br />
+      <MyForm2/>
     </>
   );
 }
