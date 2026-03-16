@@ -21,8 +21,6 @@ export default function AddCar() {
     model: '',
     color: '',
     registrationNumber: '',
-    modelYear: 0,
-    price: 0
   });
 
   // 한줄 짜리라서 필요없을 것 같지만

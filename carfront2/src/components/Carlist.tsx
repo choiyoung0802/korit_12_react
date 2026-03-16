@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCars, deleteCar } from "../api/Carapi";
 import { DataGrid, GridCellParams, GridColDef, GridToolbar } from "@mui/x-data-grid";
-import { Snackbar, Button } from "@mui/material";
+import { Snackbar, Tooltip, IconButton } from "@mui/material";
+import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
 import { useState } from "react";
 import AddCar from "./AddCar";
 import EditCar from "./EditCar";
@@ -32,14 +33,17 @@ export default function Carlist() {
       filterable: false,
       disableColumnMenu: true,
       renderCell: (params: GridCellParams) => (
-        <Button color="error"
-          onClick={() => {
-            if(confirm(`${params.row.brand}의 ${params.row.color} ${params.row.model}을(를) 삭제하시겠습니까?`)) {
-              mutate(params.row._links.self.href)
-            }
-          }}
-          >Delete
-        </Button>
+        <Tooltip title='delete car'>
+          <IconButton aria-label="delete" size="small" color="warning"
+            onClick={() => {
+              if(confirm(`${params.row.brand}의 ${params.row.color} ${params.row.model}을 삭제하시겠습니까?`)) {
+                mutate(params.row._links.self.href);
+              }
+            }}
+          >
+            <DeleteForeverRoundedIcon fontSize="small"/>
+          </IconButton>
+        </Tooltip>
       )
     }
   ]
