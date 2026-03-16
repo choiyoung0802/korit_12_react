@@ -1,9 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCars, deleteCar } from "../api/Carapi";
-import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
-import { Snackbar } from "@mui/material";
+import { DataGrid, GridCellParams, GridColDef, GridToolbar } from "@mui/x-data-grid";
+import { Snackbar, Button } from "@mui/material";
 import { useState } from "react";
 import AddCar from "./AddCar";
+import EditCar from "./EditCar";
 
 export default function Carlist() {
   const [open, setOpen] = useState(false);
@@ -17,20 +18,28 @@ export default function Carlist() {
     {field: 'modelYear', headerName: 'ModelYear', width: 200,},
     {field: 'price', headerName: 'Price', width: 200,},
     {
+      field: 'edit',
+      headerName: '',
+      sortable: false,
+      filterable: false,
+      disableColumnMenu: true,
+      renderCell: (params: GridCellParams) => <EditCar cardata={params.row}/>
+    },
+    {
       field: 'delete',
       headerName: '',
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
       renderCell: (params: GridCellParams) => (
-        <button 
+        <Button color="error"
           onClick={() => {
             if(confirm(`${params.row.brand}의 ${params.row.color} ${params.row.model}을(를) 삭제하시겠습니까?`)) {
               mutate(params.row._links.self.href)
             }
           }}
           >Delete
-        </button>
+        </Button>
       )
     }
   ]
@@ -65,6 +74,7 @@ export default function Carlist() {
           columns={columns}
           disableRowSelectionOnClick={true}
           getRowId={row => row._links.self.href}
+          slots={{toolbar: GridToolbar}}
         />
         <Snackbar
           open={open}
